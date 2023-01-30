@@ -1,0 +1,26 @@
+{% load static %}
+
+    {% for i in pdfdata %}
+    
+    <h4 class="text-center p-4">PDF: {{i.title}}</h4>
+    <h5 style="color:red;">* Note: We're monitoring you so keep your webcam onpoint :)</h5>
+    <button id="myButton" class="btn btn-primary">Start Task</button>
+    <div id="pdfsection" class="container p-4" style="height:100vh ; box-shadow: 2px 2px 5px black; display:none;">
+        
+        <embed src="{% static '/upload/'%}{{i.id}}.pdf#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="95%" type="application/pdf">
+
+    </div>
+    
+    <script>
+        document.getElementById("myButton").onclick = function(){
+            var pdf=document.getElementById('pdfsection');
+            pdf.style.display='block';
+            btn=document.getElementById("myButton");
+            btn.style.display='none';
+            location.href = "../trackface/{{i.id}}";
+
+        };
+
+    </script>
+
+    {%endfor%}

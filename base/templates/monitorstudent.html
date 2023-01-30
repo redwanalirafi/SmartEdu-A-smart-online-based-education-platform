@@ -1,0 +1,28 @@
+
+{% extends "base.html" %}
+
+{% block base %}
+
+<h4>List of Student attempts:</h4><hr>
+
+
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Student Identity</th>
+        <th scope="col">Actiont</th>
+      </tr>
+    <tbody>
+        {% for i in data %}
+        <tr>
+          <th scope="row"></th>
+          <td>{{i.email}}</td>
+          <td><a class='btn btn-secondary' href="../../showchart/{{i.id}}">Show Details</td>
+        </tr>
+        {%endfor%}
+    </tbody> 
+</table>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block base %}
+<h3>Exam Hall</h3>
+<h6 style="color: red;">( You have 10 minutest to answer all the questions. Fail to submit within the given time will result a F )</h6>
+<div>Exam closes in <span id="time"><strong>10:00</strong></span> minutes!</div>
+<br>
+
+
+
+<form action="" method="POST">
+
+    {% csrf_token %}
+
+<h5>Descriptive Questions:</h5><hr>
+{% for i in cq %}
+<br>
+    <div style="box-shadow:2px 2px 5px  grey ; padding: 10px 20px;">
+        <br>
+        <h6><strong>Question Title:</strong> {{i.question_title}} </h6>
+        <input class="form-control" type="text" name="{{i.question_id}}" placeholder="Write Your Answer Here">
+        <br><br>
+    </div>
+
+
+{%endfor%}
+
+<br><br>
+<h5>Multiple Choice Questions:</h5><hr>
+
+{% for i in mcq %}
+<br>
+    <div style="box-shadow:2px 2px 5px  grey ; padding: 10px 20px;">
+        <br>
+        <h6><strong>Question Title:</strong> {{i.question_title}} </h6>
+
+
+        <select class="form-select" multiple aria-label="multiple select example" name="{{i.question_id}}">
+            <option value="1">{{i.option1}}</option>
+            <option value="2">{{i.option2}}</option>
+            <option value="3">{{i.option3}}</option>
+            <option value="4">{{i.option4}}</option>
+        </select><br>
+
+    </div>
+
+
+{%endfor%}
+    <br><br>
+
+    <button class="btn btn-success text-center container-fluid"   type="submit">Submit</button>
+</form>
+
+
+<script>
+
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            timer = duration;
+        }
+    }, 1000);
+}
+
+window.onload = function () {
+    var tenMinutes = 30,
+        display = document.querySelector('#time');
+    startTimer(tenMinutes, display);
+};
+
+</script>
+{% endblock %}  

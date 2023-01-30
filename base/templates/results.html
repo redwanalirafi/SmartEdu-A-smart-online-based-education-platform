@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block base %}
+
+
+<h3>Result:</h3><hr>
+<br>
+<table class="table">
+    <thead>
+      <tr>
+        
+        <th scope="col">Student Name</th>
+        <th scope="col">Mark</th>
+      </tr>
+    <tbody>
+        {% for i in result %}
+        <tr>
+          
+          <td>{{i.name}}</td>
+          <td>{{i.point}}</td>
+        </tr>
+        {%endfor%}
+    </tbody> 
+</table>
+
+
+{% endblock %}

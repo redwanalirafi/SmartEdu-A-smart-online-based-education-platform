@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{%block base%} 
+
+
+    {%if myrole == 'faculty' %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+               <br>
+                <h3>Select Cohort:</h3><br><hr><br><br>
+                <select name="idcohort" class="form-select" aria-label="Default select example">
+                    {% for i in cohorts %}
+                    <option value={{i.id}}>{{i.title}}</option>
+                    {% endfor %}
+                </select>                    
+
+                
+            </div>
+            
+            <div class="col" ><br>
+              
+             
+              <h3>Select student to add:</h3><br> <hr><br>
+                <br>
+                  <select name="addstudent" class="form-select" aria-label="Default select example">
+                    {% for i in students %}
+                    <option value={{i.email}}>{{i.first_name}} {{i.last_name}}</option>
+                    {%endfor%}
+                  </select>
+                  <br>
+                  
+                
+              
+            </div>
+            <br><br>
+            <input class="btn btn-success" type="submit" name="assignbtn" value="Assign">
+
+        </div>
+    </form>
+    {%endif%}
+
+{% endblock %}

@@ -1,0 +1,166 @@
+
+{% extends "base.html" %}
+
+{% block base %}
+{% load static %}
+{% for i in pdfdata %}
+<h3>Set question for {{i.title}}:</h3><br><hr>
+
+<div class="row">
+    <div class="col">
+        <form action="" method="POST">
+            {%csrf_token%}
+            <h5>Written</h5>
+            <input type="text" class="form-control" name="textques" placeholder="Question">
+
+            <h5>Answer:</h5>
+            <input type="text" class="form-control" name="textans" placeholder="Answer of the question">
+            <br>
+            <button class="btn btn-primary" type="submit" name="textqnsubmit">SET</button>
+        </form>
+    </div>
+    
+    <div class="col">
+        <h5>Viva</h5>
+        
+        <p>
+          <button type="button" id="record">Record</button>
+          <button type="button" id="stopRecord" disabled>Stop</button>
+        </p>
+        <p>
+          <audio id="recordedAudio"></audio>        
+        </p>
+
+        <button class="btn btn-primary" type="submit" name="vivasubmit">SET</button>
+    </div>
+    <div class="col">
+        <form action="" method="POST">
+            {%csrf_token%}
+        <h5>MCQ</h5>
+        <input type="text" class="form-control" name="mcqques" placeholder="Question:"><br>
+        <input type="text" class="form-control" name="mcqop1" placeholder="Option 1">
+        <input type="text" class="form-control" name="mcqop2" placeholder="Option 2">
+        <input type="text" class="form-control" name="mcqop3" placeholder="Option 3">
+        <input type="text" class="form-control" name="mcqop4" placeholder="Option 4">
+        <br><h5>Answer</h5>
+        <select name="mcqans" class="form-select" aria-label="Default select example">
+            
+            <option value="1" selected>Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+        </select>
+
+        <br>
+        <button class="btn btn-primary" type="submit" name="mcqsubmit">SET</button>
+        </form>
+    </div>
+</div>
+
+<hr>
+
+
+<br>
+<caption>All CQ:</caption>
+<table class="table">
+    
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%for i in cq%}
+      <tr>
+        <th scope="row">{{i.qntitle}}</th>
+        <td><a class="btn btn-danger" href="../../deleteqn/{{i.qnid}}">Delete</a></td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+
+
+
+<br>
+<caption>All MCQ:</caption>
+<table class="table">
+    
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Option 1</th>
+        <th scope="col">Option 2</th>
+        <th scope="col">Option 3</th>
+        <th scope="col">Option 4</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%for i in mcq%}
+      <tr>
+        <th>{{i.qntitle}}</th>
+        <td>{{i.op1}}</td>
+        <td>{{i.op2}}</td>
+        <td>{{i.op3}}</td>
+        <td>{{i.op4}}</td>
+        <td><a class="btn btn-danger" href="../../deleteqn/{{i.qnid}}">Delete</a></td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+<br>
+
+<form action="" method="POST">
+  {%csrf_token%}
+<button class='btn btn-primary' name="publishqn">Publish</button>
+</form>
+
+
+
+
+
+<script> 
+    navigator.mediaDevices.getUserMedia({audio:true})
+    .then(stream => {handlerFunction(stream)})
+
+    function handlerFunction(stream) {
+      rec = new MediaRecorder(stream);
+      rec.ondataavailable = e => {
+        audioChunks.push(e.data);
+        if (rec.state == "inactive"){
+          let blob = new Blob(audioChunks,{type:'audio/mp3'});
+
+          
+          recordedAudio.src = URL.createObjectURL(blob);
+          recordedAudio.controls=true;
+          recordedAudio.autoplay=true;
+
+          
+
+          console.log(blob)
+          sendData(blob)
+          }
+        }
+      }
+    
+    function sendData(data) {}
+      record.onclick = e => {
+        record.disabled = true;
+        record.style.backgroundColor = "blue"
+        stopRecord.disabled=false;
+        audioChunks = [];
+        rec.start();
+        }
+      stopRecord.onclick = e => {
+        record.disabled = false;
+        stop.disabled=true;
+        record.style.backgroundColor = "red"
+        rec.stop();
+        }
+  </script>
+
+
+{% endfor %}
+{% endblock %}
